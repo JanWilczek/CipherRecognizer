@@ -1,0 +1,2 @@
+https://www.kdnuggets.com/2016/10/beginners-guide-neural-networks-python-scikit-learn.html
+https://www.springboard.com/blog/beginners-guide-neural-network-in-python-scikit-learn-0-18/
