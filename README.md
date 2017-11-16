@@ -1,11 +1,11 @@
 # CipherRecognizer
 
 ## by Jan Jasiński and Jan Wilczek
-##### &copy Jan Jasiński and Jan Wilczek 2017
+##### &copy; Jan Jasiński and Jan Wilczek 2017
 
 Cipher recognition software.
 
-###Classes overview
+### Classes overview
 
 1. GlobalParameters:
   - a singleton class containing current parameters
