@@ -1,2 +1,5 @@
-https://www.kdnuggets.com/2016/10/beginners-guide-neural-networks-python-scikit-learn.html
-https://www.springboard.com/blog/beginners-guide-neural-network-in-python-scikit-learn-0-18/
+Instrukcja:
+  https://docs.google.com/document/d/1KIReJ3yLtDpJ8ysbnC86NsdOKLp1Tn2SW4-lrliqFpw/edit
+
+A Beginner's Guide to Neural Networks in Python:
+  https://www.springboard.com/blog/beginners-guide-neural-network-in-python-scikit-learn-0-18/
