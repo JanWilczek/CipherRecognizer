@@ -14,4 +14,4 @@ class ANNClassifier:
         self.MLPClassifier.fit(training_input_data, training_output_data)
 
     def predict(self, test_input_data):
-        return MLPClassifier.predict_log_proba(test_input_data)
+        return self.MLPClassifier.predict_log_proba(test_input_data)
