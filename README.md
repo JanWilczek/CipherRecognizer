@@ -11,25 +11,31 @@ Cipher recognition software.
    - a singleton class containing current parameters
 
 1. WaveFileReader:
-    * __init(self, filepath)  - constructor   
+    * \_\_init__(self, filepath)  - constructor   
     * data(self, normalize=True) - returns data in <-1,1> range
   
  2. MFCCParametrizer:
-    * __init(self, data, parameters_list) - constructor that extracts MFCC parameters from audio data
+    * \_\_init__(self, data, parameters_list) - constructor that extracts MFCC parameters from audio data
     * parameters_(self) - returns extracted parameters
   
  3. ANNClassifier:
-    * __init(self, parameters_list) - constructor
-    * train(self, training_data)
-    * test(self, test_data)
-    * output_results_to_file(self, filename)
+    * \_\_init__(self, nb_hidden_layers, nb_neurons_in_layer, activation_function='relu', solver='lbfgs', nb_iterations=200) - constructor
+    * train(self, training_input_data, training_output_data)
+    * predict(self, test_input_data)
+    
+ 4. ResultHolder:
+    * \_\_init__(self, classes)
+    * add_result(self, prediction_vector, correct_result)
+    * error_rate(self)
+    * write_results_to_excel_file(self, filename, sheet)
+    * \_\_is_correct(self, index)
   
  4. Recognizer:
     * output_configurations_to_file(self, filename)
 
  5. ConfigurationManager:
-    * __init(self, foldername)
-    * __generate_configurations(self, np_test_files) - generates configurations with specified number of test files
+    * \_\_init__(self, foldername)
+    * \_\_generate_configurations(self, np_test_files) - generates configurations with specified number of test files
     * np_configurations(self) - returns the number of configurations
     * test_data(self, configuration_id)
     * training_data(self, configuration_id)
