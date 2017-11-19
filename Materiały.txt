@@ -3,3 +3,11 @@ Instrukcja:
 
 A Beginner's Guide to Neural Networks in Python:
   https://www.springboard.com/blog/beginners-guide-neural-network-in-python-scikit-learn-0-18/
+
+Moduł sklearn.neural_network
+  http://scikit-learn.org/stable/modules/neural_networks_supervised.html
+  
+Dokumentacja klasy MLPClassifier z powyższej biblioteki:
+  http://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier
+
+Biblioteka xlwt do tworzenia plików Excela
