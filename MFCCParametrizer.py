@@ -25,7 +25,7 @@ class MFCCParametrizer:
                  nfft=512,
                  preemph=0.97,
                  ceplifter=22,
-                 appendEnergy=False):
+                 appendEnergy=True):
         self.winlen = winlen
         self.winstep = winstep
         self.numcep = numcep
