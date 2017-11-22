@@ -16,7 +16,8 @@ Cipher recognition software.
   
  2. MFCCParametrizer:
     * \_\_init__(self, data, parameters_list) - constructor that extracts MFCC parameters from audio data
-    * parameters_(self) - returns extracted parameters
+    * parameters(self) - returns extracted parameters (a matrix)
+	* super\_vector(self) - returns averaged extracted parameters with appended rows of the covariance matrix
   
  3. ANNClassifier:
     * \_\_init__(self, nb_hidden_layers, nb_neurons_in_layer, activation_function='relu', solver='lbfgs', nb_iterations=200) - constructor
