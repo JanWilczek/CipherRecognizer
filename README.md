@@ -44,7 +44,7 @@ Cipher recognition software.
 
  5. ConfigurationManager:
     * \_\_init__(self, foldername)
-    * \_\_generate_configurations(self, np_test_files) - generates configurations with specified number of test files
+    * \_\_generate_configurations(self, nb_test_files) - generates configurations with specified number of test files
     * nb_configurations(self) - returns the number of configurations
     * test_data(self, configuration_id)
     * training_data(self, configuration_id)
