@@ -42,14 +42,16 @@ class MFCCParametrizer:
                     self.winstep,
                     self.numcep,
                     self.nfilt,
+                    self.nfft,
                     self.numcep,
                     preemph=self.preemph,
                     ceplifter=self.ceplifter,
                     appendEnergy=self.appendEnergy)
 
+
     #returns vector of mfcc averaged in time with appended rows of the covariance matrix
     def super_vector(self, signal, samplerate):
-        MFCC=MFCCParametrizer.parameters(self,signal,samplerate)
+        MFCC=self.parameters(signal,samplerate)
         AvgMFCC=np.zeros(13)
         for i in range (0, 13):
             AvgMFCC[i]=np.mean(MFCC[i,:])

@@ -19,19 +19,20 @@ def get_answer(data):
 
 configuration_manager = ConfigurationManager(join(getcwd(),"train"))
 parametrizer = MFCCParametrizer()
-classifier = ANNClassifier((200,200,190,100,50,25,10,4,2))
-result_handler = ResultHandler(['0','1','2','3','4','5','6','7','8','9'])
-
+result_handler = ResultHandler()
+#['0' '1' '2' '3' '4' '5' '6' '7' '8' '9']
 for i in range(0,configuration_manager.nb_configurations()):
+    #classifier = ANNClassifier((200,200,190,100,50,25,10,4,2))
+    classifier = ANNClassifier()
     # training
     train_filenames = configuration_manager.training_data(i)
     train_data = []
     for train_filename in train_filenames:
         audio = WavFile(train_filename)
         fs, samples = audio.data(normalize=False)
-        parameters = parametrizer.parameters(samples, fs)
-        train_data.append(parameters)
-    classifier.train(train_data,get_answers(train_data))
+        super_vector = parametrizer.super_vector(samples, fs)
+        train_data.append(super_vector)
+    classifier.train(train_data,get_answers(train_filenames))
 
     # testing
     test_filenames = configuration_manager.test_data(i)
@@ -40,11 +41,13 @@ for i in range(0,configuration_manager.nb_configurations()):
     for test_filename in test_filenames:
         audio = WavFile(test_filename)
         fs, samples = audio.data(normalize=False)
-        parameters = parametrizer.parameters(samples, fs)
-        test_data.append(parameters)
-    for i,input in enumerate(test_data):
-        result_handler.add_result(classifier.predict(input),test_answers[i])
+        super_vector = parametrizer.super_vector(samples, fs)
+        test_data.append(super_vector)
+    prediction = classifier.predict(test_data)
+    for i,input in enumerate(prediction):
+        result_handler.add_result(prediction[i],test_answers[i])
+    result_handler.classes_ = classifier.MLPClassifier.classes_
 
-print(result_handler.classes_)
-print(classifier.MLPClassifier.classes_)
-print(result_handler.error_rate)
+print(result_handler.error_rate())
+
+result_handler.write_results_to_excel_file("InitialRun.xls","Sheet1")

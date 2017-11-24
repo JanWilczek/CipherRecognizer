@@ -2,9 +2,9 @@ import xlwt
 import numpy
 
 class ResultHandler:
-    def __init__(self, classes):
+    def __init__(self):
         self.__id = 0
-        self.classes_ = classes
+        self.classes_ = []
         self.__results = []
         self.__separator = ';'
 
