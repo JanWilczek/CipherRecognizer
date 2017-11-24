@@ -1,60 +1,50 @@
 from os import listdir
-from os import getcwd
 from os.path import isfile, join
-import numpy as np
 
+# Leave One Out configurator
 class ConfigurationManager:
-    def __init__(self, foldername, test_persons_percentage):
+    def __init__(self, foldername):
         self.foldername = foldername
+
+        # Create a list of all .wav files in the folder
         self.filenames = [f for f in listdir(self.foldername) if isfile(join(self.foldername,f)) and f.endswith(".wav")]
+
+        # Extract a list of persons in the folder
         persons = set()
+        self.__persons_dictionary = {}
         for filename in self.filenames:
             persons.add(filename[:2])
+        persons = sorted(persons)
         self.persons = []
         for person in persons:
             self.persons.append(person)
-        self.nb_test_persons = int(len(self.persons) * test_persons_percentage / 100)
-        self.__generate_configurations()
+            self.__persons_dictionary[person] = []
 
-    def __generate_configurations(self):
-        self.__configurations_dictionary = {}
-        conf_number = 0
-        for i in range(0,len(self.persons)-self.nb_test_persons + 1):
-            test_file_indexes = []
-            for j in range(i, i+self.nb_test_persons):
-                test_file_indexes.append(j)
-            self.__configurations_dictionary[conf_number] = test_file_indexes
-            conf_number += 1
+        # Create a dictionary of all persons' recordings
+        for filename in self.filenames:
+            self.__persons_dictionary[self.__person_name(filename)].append(filename)
+
+    def __belongs_to(self,person,filename):
+        return (person == filename[:2])
+
+    def __person_name(self,filename):
+        return filename[:2]
 
     def nb_configurations(self):
-        return len(self.__configurations_dictionary)
+        return len(self.persons)
 
     def test_data(self, configuration_id):
-        test_filenames = []
-        for i in self.__configurations_dictionary[configuration_id]:
-            for filename in self.filenames:
-                if (filename.startswith(self.persons[i])):
-                    test_filenames.append(join(self.foldername,filename))
-        return test_filenames
+        test_data = []
+        for filename in self.__persons_dictionary[self.persons[configuration_id]]:
+            test_data.append(join(self.foldername,filename))
+        return test_data
 
     def training_data(self, configuration_id):
-        training_filenames = []
-        for i in self.__configurations_dictionary[configuration_id]:
-            for filename in self.filenames:
-                if not (filename.startswith(self.persons[i])):
-                    training_filenames.append(join(self.foldername,filename))
-        return training_filenames
+        training_data = []
+        for filename in self.filenames:
+            if not (self.__belongs_to(self.persons[configuration_id],filename)):
+                training_data.append(join(self.foldername,filename))
+        return training_data
 
 
 
-
-
-
-
-manager = ConfigurationManager(join(getcwd(),"train"),20)
-print("number of all people:")
-print(len(manager.persons))
-print("test data:")
-print(len(manager.test_data(2)))
-print("train data:")
-print(len(manager.test_data(2)))
