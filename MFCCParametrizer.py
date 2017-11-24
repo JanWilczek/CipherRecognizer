@@ -50,12 +50,24 @@ class MFCCParametrizer:
     #returns vector of mfcc averaged in time with appended rows of the covariance matrix
     def super_vector(self, signal, samplerate):
         MFCC=MFCCParametrizer.parameters(self,signal,samplerate)
-        AvMFCC=[]
-        for i in range (0, 12):
+        AvgMFCC=[]
+        for i in range (0, 13):
             tmp=0
+            LineSum=0
+            AvgLine=0
             for j in range (0, len(MFCC)):
-                tmp=MFCC(j,i)
-            AvMFCC.append(tmp)
+                tmp=MFCC[i]
+                LineSum = LineSum + tmp
+            AvgLine=LineSum/len(MFCC)
+            AvgMFCC.append(AvgLine)
+        #return AvgMFCC #array holding averages of each MFCC parameter
+        Covarience=np.cov(MFCC)
+        SuperVector=[AvgMFCC, Covarience]
+        return SuperVector
 
 
-        return AvMFCC
+
+
+
+
+
