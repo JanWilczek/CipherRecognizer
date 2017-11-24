@@ -1,6 +1,6 @@
 from WavFile import WavFile
 
-wavFile = WavFile("pusta_A_tremolo.wav")
+wavFile = WavFile("test.wav")
 
 
 fs1, normalized_data = wavFile.data()

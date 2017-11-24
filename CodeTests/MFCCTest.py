@@ -9,11 +9,12 @@ fs2, not_normalized_data = wavFile.data(normalize=False)
 
 mffcing=MP.MFCCParametrizer()
 parameters=mffcing.parameters(not_normalized_data,fs2)
-hypervector=mffcing.super_vector(not_normalized_data,fs2,)
+supervector=mffcing.super_vector(not_normalized_data,fs2,)
 
 print("Raw data")
 print(not_normalized_data)
 print("MFCC")
 print(parameters)
 print('Supervector')
-print(hypervector)
+print(supervector)
+
