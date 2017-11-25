@@ -20,11 +20,11 @@ def get_answer(data):
     return data[len(data)-6]
 
 training_manager = ConfigurationManager(join(getcwd(),"train"))
-parametrizer = MFCCParametrizer()
+parametrizer = MFCCParametrizer(appendEnergy=False)
 
 result_handler = ResultHandler()
 
-classifier = ANNClassifier((240,120),activation_function='logistic',solver='adam',alpha=0.0002)
+classifier = ANNClassifier((240,120),activation_function='logistic',solver='adam',alpha=0.0001, nb_iterations=200)
 
 # training
 train_filenames = training_manager.training_data(0)
