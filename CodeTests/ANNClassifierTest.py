@@ -30,7 +30,7 @@ training_input_data = [
 
 training_output_data = [1, 4, 2, 3, 5, 2, 1, 5, 3, 5, 2, 3, 4, 0, 2, 3, 2, 4, 5, 0]
 
-classifier = ANNClassifier(10,4)
+classifier = ANNClassifier()
 classifier.train(training_input_data,training_output_data)
 
 test_data = [
@@ -41,10 +41,11 @@ test_data = [
 
 results = [5, 3, 4]
 
-result_handler = ResultHandler(classifier.MLPClassifier.classes_)
+result_handler = ResultHandler()
 
 predictions = classifier.predict(test_data)
 
+result_handler.classes_ = classifier.MLPClassifier.classes_
 for i,prediction in enumerate(predictions):
     result_handler.add_result(prediction,results[i])
 

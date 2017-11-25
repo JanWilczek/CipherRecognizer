@@ -7,6 +7,7 @@ class ResultHandler:
         self.classes_ = []
         self.__results = []
         self.__separator = ';'
+        self.__book = xlwt.Workbook()
 
     def add_result(self, prediction_vector, correct_result):
         self.__results.append((correct_result, prediction_vector))
@@ -22,8 +23,7 @@ class ResultHandler:
 
     def write_results_to_excel_file(self, filename, sheet):
         # Create a file
-        book = xlwt.Workbook()
-        sh = book.add_sheet(sheet)
+        sh = self.__book.add_sheet(sheet)
         # Write the header (Correct result, classes' names)
         header = ['Lp.', 'Correct result']
         for class_ in self.classes_:
@@ -53,7 +53,7 @@ class ResultHandler:
         sh.write(last_index,0,"%Error rate")
         sh.write(last_index,1,self.error_rate())
 
-        book.save(filename)
+        self.__book.save(filename)
 
     def __is_correct(self, index):
         (correct_result, prediction_vector) = self.__results[index]
