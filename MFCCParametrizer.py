@@ -60,8 +60,8 @@ class MFCCParametrizer:
         for j in range (0,len(Covarience)):
             SuperVector.append(Covarience[j,:])
         FinalVector=[]
-        for i in range (0,14):
+        for i in range (0,len(SuperVector)):
             tmp = SuperVector[i]
-            for j in range (0, 13):
+            for j in range (0, len(tmp)):
                 FinalVector.append(tmp[j])
         return FinalVector
