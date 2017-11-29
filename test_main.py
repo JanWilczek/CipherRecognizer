@@ -21,7 +21,10 @@ def get_answer(data):
 classifier_file = open("classifier_data",'rb')
 classifier = pickle.load(classifier_file)
 
-parametrizer = MFCCParametrizer()
+#Trzeba zrozumiec czemu to nie dziala!!
+#parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18)
+parametrizer = MFCCParametrizer(appendEnergy=False)
+
 
 result_handler = ResultHandler()
 # testing

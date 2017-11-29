@@ -18,7 +18,7 @@ def get_answer(data):
     return data[len(data)-6]
 
 configuration_manager = ConfigurationManager(join(getcwd(),"train"))
-parametrizer = MFCCParametrizer(appendEnergy=False)
+parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18)
 #['0' '1' '2' '3' '4' '5' '6' '7' '8' '9']
 #for j in range(0,5):
     #for activation in ['identity', 'logistic', 'tanh', 'relu']:    # Best: 'logistic'
@@ -26,7 +26,7 @@ parametrizer = MFCCParametrizer(appendEnergy=False)
 #for j in [200, 220, 240, 260]:       # Best result yet: 240
     #for k in [80, 100, 120, 140]:     # Best result yet: 120 error_rate=12,(72)
 #for shuffle in [True, False]:
-for j in range (0,4):
+for j in range (0,10):
 
         result_handler = ResultHandler()
         for i in range(0,configuration_manager.nb_configurations()):
