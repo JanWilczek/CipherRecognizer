@@ -56,5 +56,4 @@ with open('results.csv', 'w') as csvfile:
                 answer=a
         result_writer.writerow([file] + [answer] + [probability])
         i=i+1
-
 classifier_file.close()
