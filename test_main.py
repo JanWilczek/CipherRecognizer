@@ -6,6 +6,7 @@ from ANNClassifier import ANNClassifier
 from ResultHandler import ResultHandler
 from WavFile import WavFile
 import pickle
+import csv
 
 def get_answers(data):
     answers = []
@@ -23,7 +24,6 @@ classifier = pickle.load(classifier_file)
 parametrizer = MFCCParametrizer()
 
 result_handler = ResultHandler()
-
 # testing
 test_manager = ConfigurationManager(join(getcwd(),"test"))
 test_filenames = test_manager.training_data(0)
@@ -44,5 +44,17 @@ print(result_handler.error_rate())
 filename = "OutsideTestRun.xls"
 sheet_name = "Sheet1"
 result_handler.write_results_to_excel_file(filename,sheet_name)
+
+#Writing to csv file
+with open('results.csv', 'w') as csvfile:
+    result_writer=csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    i=0
+    for file in test_filenames:
+        probability=max(prediction[i])
+        for a in range (0,9):
+            if probability==prediction[i,a] :
+                answer=a
+        result_writer.writerow([file] + [answer] + [probability])
+        i=i+1
 
 classifier_file.close()
