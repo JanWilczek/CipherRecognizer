@@ -7,6 +7,8 @@ from ResultHandler import ResultHandler
 from WavFile import WavFile
 import pickle
 import csv
+from Evaluation import evaluate
+
 
 def get_answers(data):
     answers = []
@@ -21,10 +23,7 @@ def get_answer(data):
 classifier_file = open("classifier_data",'rb')
 classifier = pickle.load(classifier_file)
 
-#Trzeba zrozumiec czemu to nie dziala!!
-#parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18)
 parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18)
-
 
 result_handler = ResultHandler()
 # testing
@@ -49,14 +48,17 @@ sheet_name = "Sheet1"
 result_handler.write_results_to_excel_file(filename,sheet_name)
 
 #Writing to csv file
-with open('results.csv', 'w') as csvfile:
+with open('results.csv', 'w',newline='') as csvfile:
     result_writer=csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
     i=0
     for file in test_filenames:
+        file=file[(len(file)-7):]
         probability=max(prediction[i])
-        for a in range (0,9):
+        for a in range (0,10):
             if probability==prediction[i,a] :
                 answer=a
         result_writer.writerow([file] + [answer] + [probability])
         i=i+1
 classifier_file.close()
+
+evaluate()
