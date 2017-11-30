@@ -23,7 +23,7 @@ classifier = pickle.load(classifier_file)
 
 #Trzeba zrozumiec czemu to nie dziala!!
 #parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18)
-parametrizer = MFCCParametrizer(appendEnergy=False)
+parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18)
 
 
 result_handler = ResultHandler()

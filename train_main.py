@@ -20,7 +20,7 @@ def get_answer(data):
     return data[len(data)-6]
 
 training_manager = ConfigurationManager(join(getcwd(),"train"))
-parametrizer = MFCCParametrizer(appendEnergy=False)
+parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18)
 
 result_handler = ResultHandler()
 
