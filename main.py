@@ -15,8 +15,8 @@ setup_results_file = open("setup_results_file.txt",'a')
 for loop_enforcer in range(0,1):
     #for nb_neurons_in_1_layer in [200, 220, 240, 260]:       # Best result yet: 240
        #for nb_neurons_in_2_layer in [80, 100, 120, 140]:     # Best result yet: 120
-            #for activation in ['identity', 'logistic', 'tanh', 'relu']:    # Best: 'logistic'
-                #for solver in ['lbfgs', 'sgd', 'adam']:                    # Best: 'adam'
+            for activation in ['identity', 'logistic', 'tanh', 'relu']:    # Best: 'logistic'
+                for solver in ['lbfgs', 'sgd', 'adam']:                    # Best: 'adam'
                     #for shuffle in [True, False]:
                         # for max_iter in [200, 400, 800]:
                             # for alpha in [0.0002 0.0004 0.0008]:
@@ -29,9 +29,10 @@ for loop_enforcer in range(0,1):
                                                         # for preemph in []:
                                                             # for ceplifter in []:
                                                                 for iteration_of_setup in range (0,3):
+                                                                    result_handler.reset()
                                                                     parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18)
                                                                     for i in range(0,configuration_manager.nb_configurations()):
-                                                                        classifier = ANNClassifier((240,120),activation_function='logistic',solver='adam', alpha=0.0001, nb_iterations=200)
+                                                                        classifier = ANNClassifier((240,120),activation_function=activation,solver=solver, alpha=0.0001, nb_iterations=200)
                                                                         # training
                                                                         train_filenames = configuration_manager.training_data(i)
                                                                         train_data = get_samples_matrix(train_filenames, parametrizer)

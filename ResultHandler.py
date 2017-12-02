@@ -3,10 +3,8 @@ import numpy
 
 class ResultHandler:
     def __init__(self, classes):
-        self.__id = 0
         self.classes_ = classes
         self.__results = []
-        self.__separator = ';'
         self.__book = xlwt.Workbook()
 
     def add_result(self, prediction_vector, correct_result):
@@ -29,6 +27,9 @@ class ResultHandler:
             return True
         else:
             return False
+
+    def reset(self):
+        self.__results = []
 
     def write_results_to_excel_sheet(self, sheet):
         # Create the sheet
