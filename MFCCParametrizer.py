@@ -10,7 +10,9 @@ class MFCCParametrizer:
                  nfft=2048,
                  preemph=0.97,
                  ceplifter=22,
-                 appendEnergy=True):
+                 appendEnergy=True,
+                 lowfreq=0,
+                 highfreq=20000):
         self.winlen = winlen
         self.winstep = winstep
         self.numcep = numcep
@@ -19,6 +21,8 @@ class MFCCParametrizer:
         self.preemph = preemph
         self.ceplifter = ceplifter
         self.appendEnergy = appendEnergy
+        self.lowfreq=lowfreq
+        self.highfreq=highfreq
 
     def parameters(self, signal, samplerate):
         return mfcc(signal=signal,
