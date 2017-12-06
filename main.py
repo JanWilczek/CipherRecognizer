@@ -18,7 +18,7 @@ def get_answer(data):
     return data[len(data)-6]
 
 configuration_manager = ConfigurationManager(join(getcwd(),"train"))
-parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18)
+
 #['0' '1' '2' '3' '4' '5' '6' '7' '8' '9']
 #for j in range(0,5):
     #for activation in ['identity', 'logistic', 'tanh', 'relu']:    # Best: 'logistic'
@@ -26,37 +26,40 @@ parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18)
 #for j in [200, 220, 240, 260]:       # Best result yet: 240
     #for k in [80, 100, 120, 140]:     # Best result yet: 120 error_rate=12,(72)
 #for shuffle in [True, False]:
-for j in range (0,10):
+for n in range (0,2):
+    for nfilt in [20, 26, 30]:
 
-    result_handler = ResultHandler()
-    for i in range(0,configuration_manager.nb_configurations()):
+        parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18, nfilt=nfilt)
 
-        classifier = ANNClassifier((240,120),activation_function='logistic',solver='adam', alpha=0.0001, nb_iterations=200)
-        # training
-        train_filenames = configuration_manager.training_data(i)
-        train_data = []
-        for train_filename in train_filenames:
-            audio = WavFile(train_filename)
-            fs, samples = audio.data(normalize=False)
-            super_vector = parametrizer.super_vector(samples, fs)
-            train_data.append(super_vector)
-        classifier.train(train_data,get_answers(train_filenames))
+        result_handler = ResultHandler()
+        for i in range(0,configuration_manager.nb_configurations()):
 
-        # testing
-        test_filenames = configuration_manager.test_data(i)
-        test_answers = get_answers(test_filenames)
-        test_data = []
-        for test_filename in test_filenames:
-            audio = WavFile(test_filename)
-            fs, samples = audio.data(normalize=False)
-            super_vector = parametrizer.super_vector(samples, fs)
-            test_data.append(super_vector)
-        prediction = classifier.predict(test_data)
-        for i,input in enumerate(prediction):
-            result_handler.add_result(prediction[i],test_answers[i])
-        result_handler.classes_ = classifier.MLPClassifier.classes_
+            classifier = ANNClassifier((240,120),activation_function='logistic',solver='adam', alpha=0.0001, nb_iterations=200)
+            # training
+            train_filenames = configuration_manager.training_data(i)
+            train_data = []
+            for train_filename in train_filenames:
+                audio = WavFile(train_filename)
+                fs, samples = audio.data(normalize=False)
+                super_vector = parametrizer.super_vector(samples, fs)
+                train_data.append(super_vector)
+            classifier.train(train_data,get_answers(train_filenames))
 
-    print(result_handler.error_rate())
+            # testing
+            test_filenames = configuration_manager.test_data(i)
+            test_answers = get_answers(test_filenames)
+            test_data = []
+            for test_filename in test_filenames:
+                audio = WavFile(test_filename)
+                fs, samples = audio.data(normalize=False)
+                super_vector = parametrizer.super_vector(samples, fs)
+                test_data.append(super_vector)
+            prediction = classifier.predict(test_data)
+            for i,input in enumerate(prediction):
+                result_handler.add_result(prediction[i],test_answers[i])
+            result_handler.classes_ = classifier.MLPClassifier.classes_
+
+        print(result_handler.error_rate())
 filename = "WorstClassTestRun2.xls"
 sheet_name = "Sheet1"
 result_handler.write_results_to_excel_file(filename,sheet_name)
