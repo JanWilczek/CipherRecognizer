@@ -21,7 +21,6 @@ class ResultHandler:
 
     def __is_correct(self, index):
         (correct_result, prediction_vector) = self.__results[index]
-        #prediction = self.classes_[prediction_vector.index(max(prediction_vector))]
         prediction = self.classes_[numpy.where(prediction_vector == max(prediction_vector))]
         if prediction == correct_result:
             return True
