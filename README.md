@@ -8,11 +8,11 @@ Digit recognition software.
 ### Classes overview
 
  1. `WavFile` - responsible for retrieving audio data from a .wav file
-    * `\_\_init__(self, filepath)`  - constructor   
+    * `__init__(self, filepath)`  - constructor   
     * `data(self, normalize=True)` - returns audio data in <-1,1> range if normalize=True in short format otherwise
   
  2. `MFCCParametrizer` - responsible for extraction of MFCC parameters 
-    * `\_\_init__(self,
+    * `__init__(self,
                  winlen=0.025,
                  winstep=0.01,
                  numcep=13,
@@ -20,18 +20,22 @@ Digit recognition software.
                  nfft=512,
                  preemph=0.97,
                  ceplifter=22,
-                 appendEnergy=True)` - constructor setting up the MFCC extraction arguments
+                 appendEnergy=True,
+                 appendDeltas=True, 
+                 appendDeltasDeltas=True)` - constructor setting up the MFCC extraction arguments
     * `parameters(self)` - extracts and returns a matrix of MFCC parameters according to the specified setup
-	* `super\_vector(self)` - returns averaged extracted parameters with appended rows of the covariance matrix
+	* `super_vector(self)` - returns averaged extracted parameters with appended rows of the covariance matrix
+	* `deltas(self, mfcc_parameters)` - returns the deltas calculated from mfcc_parameters matrix. May be used to calculate deltas deltas
+	as well by calling `self.deltas(self, deltas)` where deltas is a precalculated matrix of deltas.
   
  3. `ANNClassifier` - a classifier based on Artificial Neural Network
-    * `\_\_init__(self, hidden_layers_sizes=(100,), activation_function='relu', solver='lbfgs', nb_iterations=200, alpha=0.0001)` -
+    * `__init__(self, hidden_layers_sizes=(100,), activation_function='relu', solver='lbfgs', nb_iterations=200, alpha=0.0001)` -
      constructor with passed in neural network parameters
     * `train(self, training_input_data, training_output_data)` - performs training of the neural network classifer
     * `predict(self, test_input_data)` - for a matrix of input data returns a matrix of prediction vectors
     
  4. `ResultHandler` - a utility for handling results of cross-validation tests
-    * `\_\_init__(self, classes)` - constructor setting up the vector of possible classes
+    * `__init__(self, classes)` - constructor setting up the vector of possible classes
     * `reset(self)` - removes all results from the inner buffer (but not from the Excel file)
     * `add_result(self, prediction_vector, correct_result)` - adds a result to the inner buffer along with the correct result
     * `error_rate(self)` - returns the error rate of all results currently stored in the buffer
@@ -40,7 +44,7 @@ Digit recognition software.
 
  5. `ConfigurationManager` - responsible for generating leave-one-out cross-validation configurations 
     where all recordings from one speaker are removed from training and set as a test for the system
-    * `\_\_init__(self, foldername)` - constructor with passed in name of the folder with the training files
+    * `__init__(self, foldername)` - constructor with passed in name of the folder with the training files
     * `nb_configurations(self)` - returns the number of leave-one-out configurations
     * `test_data(self, configuration_id)` - returns an array of full paths to the test files of the given configuration ID
     * `training_data(self, configuration_id)` - returns an array of full paths the training files of the given configuration ID

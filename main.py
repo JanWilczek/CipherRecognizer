@@ -13,28 +13,26 @@ result_handler = ResultHandler(asarray(['0', '1', '2', '3', '4', '5', '6', '7', 
 setup_results_file = open("setup_results_file.txt",'a')
 
 for loop_enforcer in range(0,1):
-    for nb_neurons_in_1_layer in [220]:       # Best result yet: 240
-       for nb_neurons_in_2_layer in [110]:     # Best result yet: 120
-            for activation in ['logistic']:    # Best: 'logistic'
-                for solver in ['adam']:                    # Best: 'adam'
-                    for shuffle in [True, False]:
-                        for max_iter in [200, 400, 800]:
-                            for alpha in [0.0001, 0.0003, 0.0008]:
-                                for appendEnergy in [True, False]:
-                                    for winlen in [0.025, 0.03, 0.04]:
-                                        for winstep in [0.01, 0.015, 0.02]:
-                                            for numcep in [10, 15, 20, 25]:
-                                                for nfilt in [14, 18, 20]:
+    for nb_neurons_in_1_layer in [220, 230, 240]:       # Best result yet: 220
+       for nb_neurons_in_2_layer in [110, 115, 120]:     # Best result yet: 110
+                    for shuffle in [True]:
+                        for max_iter in [200]:
+                            for alpha in [0.0001]:
+                                for appendEnergy in [False]:
+                                    for winlen in [0.025]:
+                                        for winstep in [0.01]:
+                                            for numcep in [18]:
+                                                for nfilt in [26]:
                                                     for nfft in [512]: #1024 gives 6.5% better results but increases computing times by 16.7%
-                                                        for preemph in [0.9]: #small statistical margin
+                                                        for preemph in [0.97]: #small statistical margin
                                                             for ceplifter in [27]: #small statistical margin
-                                                                for lowfreq in [0, 50, 80]:
-                                                                    for iteration_of_setup in range (0,3):
-                                                                        for highfreq in [20000, 8000, 4000]:
+                                                                for lowfreq in [0]:
+                                                                    for highfreq in [16000]:
+                                                                        for iteration_of_setup in range (0,3):
                                                                             result_handler.reset()
                                                                             parametrizer = MFCCParametrizer(winlen=winlen, winstep=winstep, numcep=numcep, nfilt=nfilt, nfft=nfft, preemph=preemph, appendEnergy=appendEnergy, ceplifter=ceplifter, lowfreq=lowfreq, highfreq=highfreq)
                                                                             for i in range(0,configuration_manager.nb_configurations()):
-                                                                                classifier = ANNClassifier(hidden_layers_sizes=(nb_neurons_in_1_layer,nb_neurons_in_2_layer),activation_function=activation,solver=solver, alpha=alpha, nb_iterations=max_iter)
+                                                                                classifier = ANNClassifier(hidden_layers_sizes=(nb_neurons_in_1_layer,nb_neurons_in_2_layer),activation_function='logistic',solver='adam', alpha=alpha, nb_iterations=max_iter)
                                                                                 # training
                                                                                 train_filenames = configuration_manager.training_data(i)
                                                                                 train_data = get_samples_matrix(train_filenames, parametrizer)

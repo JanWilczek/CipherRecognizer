@@ -12,7 +12,9 @@ class MFCCParametrizer:
                  ceplifter=22,
                  appendEnergy=True,
                  lowfreq=0,
-                 highfreq=20000):
+                 highfreq=20000,
+                 appendDeltas=True,
+                 appendDeltasDeltas=True):
         self.winlen = winlen
         self.winstep = winstep
         self.numcep = numcep
@@ -23,6 +25,8 @@ class MFCCParametrizer:
         self.appendEnergy = appendEnergy
         self.lowfreq=lowfreq
         self.highfreq=highfreq
+        self.appendDeltas=appendDeltas
+        self.appendDeltasDeltas=appendDeltasDeltas
 
     def parameters(self, signal, samplerate):
         return mfcc(signal=signal,
@@ -40,22 +44,45 @@ class MFCCParametrizer:
     # returns vector of mfcc averaged in time with appended rows of the covariance matrix
     def super_vector(self, signal, samplerate):
 
-        MFCC=self.parameters(signal,samplerate)
+        mfcc = self.parameters(signal,samplerate)
 
-        AvgMFCC=np.zeros(self.numcep)
-        for i in range (0, self.numcep):
-            AvgMFCC[i]=np.mean(MFCC[i,:])
+        mean_mfcc = self.__mean_coefficients(mfcc)
 
-        Covariance=np.cov(np.transpose(MFCC))
+        covariance = np.cov(np.transpose(mfcc))
 
-        SuperVector=[AvgMFCC]
-        for j in range (0,len(Covariance)):
-            SuperVector.append(Covariance[j,:])
+        super_vector = [mean_mfcc]
+        for j in range (0,len(covariance)):
+            super_vector.append(covariance[j,:])
 
-        FinalVector=[]
-        for i in range (0,len(SuperVector)):
-            tmp = SuperVector[i]
+        if self.appendDeltas:
+            deltas = self.deltas(mfcc)
+            mean_deltas = self.__mean_coefficients(deltas)
+            super_vector.append(mean_deltas)
+
+            if self.appendDeltasDeltas:
+                deltas_deltas = self.deltas(deltas)
+                mean_deltas_deltas = self.__mean_coefficients(deltas_deltas)
+                super_vector.append(mean_deltas_deltas)
+
+        final_vector = []
+        for i in range (0,len(super_vector)):
+            tmp = super_vector[i]
             for j in range (0, len(tmp)):
-                FinalVector.append(tmp[j])
+                final_vector.append(tmp[j])
 
-        return FinalVector
+        return final_vector
+
+    def deltas(self, mfcc_parameters):
+        deltas = np.zeros((mfcc_parameters.shape[0], self.numcep))
+
+        for i in range(1,mfcc_parameters.shape[0]):
+            deltas[i] = mfcc_parameters[i]-mfcc_parameters[i-1]
+
+        return deltas
+
+    def __mean_coefficients(self, coefficients):
+        mean = np.zeros(coefficients.shape[1])
+        for i in range(0, coefficients.shape[1]):
+            mean[i] = np.mean(coefficients[i, :])
+
+        return mean

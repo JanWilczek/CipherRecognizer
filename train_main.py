@@ -8,8 +8,8 @@ import pickle
 
 
 training_manager = ConfigurationManager(join(getcwd(),"train"))
-parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18)
-classifier = ANNClassifier((240,120),activation_function='logistic',solver='adam',alpha=0.0001, nb_iterations=200)
+parametrizer = MFCCParametrizer(appendEnergy=False, numcep=18, nfft=1024, nfilt=26, ceplifter=27)
+classifier = ANNClassifier((220,110),activation_function='logistic',solver='adam',alpha=0.0001, nb_iterations=200)
 
 # training
 train_filenames = training_manager.training_data(0)
