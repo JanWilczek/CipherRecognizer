@@ -1,5 +1,5 @@
 import numpy as np
-from python_speech_features import mfcc
+from python_speech_features import mfcc, delta
 
 class MFCCParametrizer:
     def __init__(self,
@@ -13,8 +13,8 @@ class MFCCParametrizer:
                  appendEnergy=True,
                  lowfreq=0,
                  highfreq=20000,
-                 appendDeltas=True,
-                 appendDeltasDeltas=True):
+                 appendDeltas=15,
+                 appendDeltasDeltas=15):
         self.winlen = winlen
         self.winstep = winstep
         self.numcep = numcep
@@ -41,7 +41,7 @@ class MFCCParametrizer:
                     appendEnergy=self.appendEnergy)
 
 
-    # returns vector of mfcc averaged in time with appended rows of the covariance matrix
+    # returns vector of mfcc averaged in time with appended rows of the covariance matrix and optionally deltas and deltas deltas
     def super_vector(self, signal, samplerate):
 
         mfcc = self.parameters(signal,samplerate)
@@ -55,12 +55,12 @@ class MFCCParametrizer:
             super_vector.append(covariance[j,:])
 
         if self.appendDeltas:
-            deltas = self.deltas(mfcc)
+            deltas = delta(mfcc, self.appendDeltas)
             mean_deltas = self.__mean_coefficients(deltas)
             super_vector.append(mean_deltas)
 
             if self.appendDeltasDeltas:
-                deltas_deltas = self.deltas(deltas)
+                deltas_deltas = delta(deltas, self.appendDeltasDeltas)
                 mean_deltas_deltas = self.__mean_coefficients(deltas_deltas)
                 super_vector.append(mean_deltas_deltas)
 
@@ -71,14 +71,6 @@ class MFCCParametrizer:
                 final_vector.append(tmp[j])
 
         return final_vector
-
-    def deltas(self, mfcc_parameters):
-        deltas = np.zeros((mfcc_parameters.shape[0], self.numcep))
-
-        for i in range(1,mfcc_parameters.shape[0]):
-            deltas[i] = mfcc_parameters[i]-mfcc_parameters[i-1]
-
-        return deltas
 
     def __mean_coefficients(self, coefficients):
         mean = np.zeros(coefficients.shape[1])

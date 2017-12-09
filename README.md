@@ -21,12 +21,11 @@ Digit recognition software.
                  preemph=0.97,
                  ceplifter=22,
                  appendEnergy=True,
-                 appendDeltas=True, 
-                 appendDeltasDeltas=True)` - constructor setting up the MFCC extraction arguments
+                 appendDeltas=15, 
+                 appendDeltasDeltas=15)` - constructor setting up the MFCC extraction arguments. The last two arguments specify the
+                 number of frames between which the deltas (or deltas deltas) are being calculated. If they are equal to 0 none are calculated.
     * `parameters(self)` - extracts and returns a matrix of MFCC parameters according to the specified setup
 	* `super_vector(self)` - returns averaged extracted parameters with appended rows of the covariance matrix
-	* `deltas(self, mfcc_parameters)` - returns the deltas calculated from mfcc_parameters matrix. May be used to calculate deltas deltas
-	as well by calling `self.deltas(self, deltas)` where deltas is a precalculated matrix of deltas.
   
  3. `ANNClassifier` - a classifier based on Artificial Neural Network
     * `__init__(self, hidden_layers_sizes=(100,), activation_function='relu', solver='lbfgs', nb_iterations=200, alpha=0.0001)` -
