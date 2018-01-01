@@ -31,7 +31,7 @@ class WavFile:
 
         # Normalizing
         if (normalize):
-            maximum = np.max(samples)
+            maximum = np.max(abs(samples))
             normalized_samples = []
             for i in range(0, len(samples)):
                 normalized_samples.append(samples[i] / maximum)
